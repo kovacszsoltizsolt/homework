@@ -68,5 +68,13 @@ public class DueDateCalculatorTest {
         assertEquals(dueDate, calculator.calculateDuedate(submitDate, 72));
     }
 
+    @Test
+    public void testDueDateCalculationWithOverflowingHours() {
+        LocalDateTime submitDate = LocalDateTime.parse("2019-03-04 12:00", formatter);
+        LocalDateTime dueDate = LocalDateTime.parse("2019-03-05 10:00", formatter);
+        assertEquals(dueDate, calculator.calculateDuedate(submitDate, 6));
+    }
+
+
 
 }

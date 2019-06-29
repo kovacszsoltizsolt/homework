@@ -8,7 +8,10 @@ public class DueDateCalculator {
     public LocalDateTime calculateDuedate(LocalDateTime submitDate, Integer turnaround) {
         validateParams(submitDate, turnaround);
 
-        return submitDate.plusHours(turnaround);
+        int turnaroundDays = turnaround / 8;
+        int turnaroundHours = turnaround % 8;
+
+        return submitDate.plusDays(turnaroundDays).plusHours(turnaroundHours);
     }
 
     private void validateParams(LocalDateTime submitDate, Integer turnaround) throws IllegalArgumentException {

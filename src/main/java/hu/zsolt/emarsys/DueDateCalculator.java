@@ -10,7 +10,13 @@ public class DueDateCalculator {
     private static final LocalTime END_OF_WORKING_DAY = LocalTime.of(17, 0);
 
 
-    public LocalDateTime calculateDuedate(LocalDateTime submitDate, Integer turnaround) {
+    /** The implementation of the requested algorithm
+     *
+     * @param submitDate date the issue was created
+     * @param turnaround turnaround time
+     * @return due date of the issue
+     */
+    public LocalDateTime calculateDueDate(LocalDateTime submitDate, Integer turnaround) {
         validateParams(submitDate, turnaround);
 
         LocalDateTime dueDate;
@@ -43,6 +49,7 @@ public class DueDateCalculator {
         for (int i = turnaroundDays; i > 0; i--) {
             submitDate = plusOneWorkingDay(submitDate);
         }
+
         return submitDate;
     }
 
@@ -50,13 +57,13 @@ public class DueDateCalculator {
         do {
             date = date.plusDays(1);
         } while (isWeekendDay(date));
+
         return date;
     }
 
     private boolean isWeekendDay(LocalDateTime date) {
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY);
-
     }
 
     private void validateParams(LocalDateTime submitDate, Integer turnaround) throws IllegalArgumentException {
@@ -71,6 +78,10 @@ public class DueDateCalculator {
         validateSubmitDate(submitDate);
     }
 
+    /**
+     * @param submitDate date the issue was submitted
+     * @throws IllegalArgumentException if the date is not in the working hours
+     */
     private void validateSubmitDate(LocalDateTime submitDate) throws IllegalArgumentException {
         if (submitDate.toLocalTime().isBefore(START_OF_WORKING_DAY)
                 || submitDate.toLocalTime().isAfter(END_OF_WORKING_DAY)) {

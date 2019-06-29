@@ -56,10 +56,17 @@ public class DueDateCalculatorTest {
     }
 
     @Test
-    public void testSimpleDueDateCalculation() {
+    public void testDueDateCalculationNoWeekend() {
         LocalDateTime submitDate = LocalDateTime.parse("2019-03-04 09:30", formatter);
-        LocalDateTime dueDate = LocalDateTime.parse("2019-03-04 17:30", formatter);
+        LocalDateTime dueDate = LocalDateTime.parse("2019-03-05 09:30", formatter);
         assertEquals(calculator.calculateDuedate(submitDate, 8), dueDate);
+    }
+
+    @Test
+    public void testDueDateCalculationWithWeekend() {
+        LocalDateTime submitDate = LocalDateTime.parse("2019-03-04 09:30", formatter);
+        LocalDateTime dueDate = LocalDateTime.parse("2019-03-15 09:30", formatter);
+        assertEquals(calculator.calculateDuedate(submitDate, 72), dueDate);
     }
 
 

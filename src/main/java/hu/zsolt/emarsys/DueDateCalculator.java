@@ -6,6 +6,9 @@ import java.time.LocalTime;
 
 public class DueDateCalculator {
 
+    private static final LocalTime START_OF_WORKING_DAY = LocalTime.of(9, 0);
+    private static final LocalTime END_OF_WORKING_DAY = LocalTime.of(17, 0);
+
 
     public LocalDateTime calculateDuedate(LocalDateTime submitDate, Integer turnaround) {
         validateParams(submitDate, turnaround);
@@ -15,8 +18,25 @@ public class DueDateCalculator {
         int turnaroundHours = turnaround % 8;
 
         dueDate = addWorkingDays(submitDate, turnaroundDays);
+        dueDate = addWorkingHours(dueDate, turnaroundHours);
 
-        return dueDate.plusHours(turnaroundHours);
+        return dueDate;
+    }
+
+    private LocalDateTime addWorkingHours(LocalDateTime dueDate, int turnaroundHours) {
+        dueDate = dueDate.plusHours(turnaroundHours);
+        LocalTime time = dueDate.toLocalTime();
+
+        if (time.isAfter(END_OF_WORKING_DAY)) {
+            LocalTime newTime = START_OF_WORKING_DAY.plusMinutes(getMinutesAfterEndOfDay(time));
+            dueDate = plusOneWorkingDay(dueDate.with(newTime));
+        }
+
+        return dueDate;
+    }
+
+    private int getMinutesAfterEndOfDay(LocalTime start) {
+        return (start.getHour() - DueDateCalculator.END_OF_WORKING_DAY.getHour()) * 60 + start.getMinute();
     }
 
     private LocalDateTime addWorkingDays(LocalDateTime submitDate, int turnaroundDays) {
@@ -52,8 +72,8 @@ public class DueDateCalculator {
     }
 
     private void validateSubmitDate(LocalDateTime submitDate) throws IllegalArgumentException {
-        if (submitDate.toLocalTime().isBefore(LocalTime.of(9, 0))
-                || submitDate.toLocalTime().isAfter(LocalTime.of(17, 0))) {
+        if (submitDate.toLocalTime().isBefore(START_OF_WORKING_DAY)
+                || submitDate.toLocalTime().isAfter(END_OF_WORKING_DAY)) {
             throw new IllegalArgumentException("Bugs must be reported during the working hours!");
         }
     }

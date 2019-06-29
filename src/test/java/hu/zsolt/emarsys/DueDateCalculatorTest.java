@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.dnd.DnDConstants;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -59,14 +58,14 @@ public class DueDateCalculatorTest {
     public void testDueDateCalculationNoWeekend() {
         LocalDateTime submitDate = LocalDateTime.parse("2019-03-04 09:30", formatter);
         LocalDateTime dueDate = LocalDateTime.parse("2019-03-05 09:30", formatter);
-        assertEquals(calculator.calculateDuedate(submitDate, 8), dueDate);
+        assertEquals(dueDate, calculator.calculateDuedate(submitDate, 8));
     }
 
     @Test
     public void testDueDateCalculationWithWeekend() {
         LocalDateTime submitDate = LocalDateTime.parse("2019-03-04 09:30", formatter);
         LocalDateTime dueDate = LocalDateTime.parse("2019-03-15 09:30", formatter);
-        assertEquals(calculator.calculateDuedate(submitDate, 72), dueDate);
+        assertEquals(dueDate, calculator.calculateDuedate(submitDate, 72));
     }
 
 

@@ -8,6 +8,7 @@ import java.awt.dnd.DnDConstants;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DueDateCalculatorTest {
@@ -52,6 +53,13 @@ public class DueDateCalculatorTest {
     public void testInvalidTurnaround() {
         LocalDateTime submitDate = LocalDateTime.parse("2019-03-04 08:30", formatter);
         assertThrows(IllegalArgumentException.class, () -> calculator.calculateDuedate(submitDate, -1));
+    }
+
+    @Test
+    public void testSimpleDueDateCalculation() {
+        LocalDateTime submitDate = LocalDateTime.parse("2019-03-04 09:30", formatter);
+        LocalDateTime dueDate = LocalDateTime.parse("2019-03-04 17:30", formatter);
+        assertEquals(calculator.calculateDuedate(submitDate, 8), dueDate);
     }
 
 

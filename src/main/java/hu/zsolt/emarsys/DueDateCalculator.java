@@ -7,7 +7,8 @@ public class DueDateCalculator {
 
     public LocalDateTime calculateDuedate(LocalDateTime submitDate, Integer turnaround) {
         validateParams(submitDate, turnaround);
-        return null;
+
+        return submitDate.plusHours(turnaround);
     }
 
     private void validateParams(LocalDateTime submitDate, Integer turnaround) throws IllegalArgumentException {

@@ -1,7 +1,5 @@
 package hu.zsolt.emarsys;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -12,18 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DueDateCalculatorTest {
 
-    private static DateTimeFormatter formatter;
-    private DueDateCalculator calculator;
-
-    @BeforeAll
-    public static void setUp() {
-        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    }
-
-    @BeforeEach
-    private void init() {
-        calculator = new DueDateCalculator();
-    }
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static DueDateCalculator calculator= new DueDateCalculator();
 
     @Test
     void testNullSubmitDate() {

@@ -1,17 +1,42 @@
 package hu.zsolt.emarsys;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class DueDateCalculator {
 
+
     public LocalDateTime calculateDuedate(LocalDateTime submitDate, Integer turnaround) {
         validateParams(submitDate, turnaround);
 
+        LocalDateTime dueDate;
         int turnaroundDays = turnaround / 8;
         int turnaroundHours = turnaround % 8;
 
-        return submitDate.plusDays(turnaroundDays).plusHours(turnaroundHours);
+        dueDate = addWorkingDays(submitDate, turnaroundDays);
+
+        return dueDate.plusHours(turnaroundHours);
+    }
+
+    private LocalDateTime addWorkingDays(LocalDateTime submitDate, int turnaroundDays) {
+        for (int i = turnaroundDays; i > 0; i--) {
+            submitDate = plusOneWorkingDay(submitDate);
+        }
+        return submitDate;
+    }
+
+    private LocalDateTime plusOneWorkingDay(LocalDateTime date) {
+        do {
+            date = date.plusDays(1);
+        } while (isWeekendDay(date));
+        return date;
+    }
+
+    private boolean isWeekendDay(LocalDateTime date) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        return dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY);
+
     }
 
     private void validateParams(LocalDateTime submitDate, Integer turnaround) throws IllegalArgumentException {

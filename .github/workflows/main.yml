@@ -31,6 +31,4 @@ jobs:
           name: sample-json.json
           # The json string that can be a secret of the github repo or a string of a json. | "{"title": "my json"}" 
           json: ${{ secrets.JSON_FILE }}
-          # Optional subfolder directory to save the json file. | src/ 
-          dir: sample
                  
